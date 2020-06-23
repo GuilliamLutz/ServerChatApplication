@@ -24,9 +24,12 @@ public class ClientHandler extends Thread {
     }
 
     private void clientSocketHandler() throws IOException, InterruptedException {
+        //recieves data from the client and/ sends it to the server
         InputStream inputStream = clientSocket.getInputStream();
+        //recieves data from the server and sends it to the client
         OutputStream outputStream = clientSocket.getOutputStream();
 
+        //reads what comes in trough the inputstream
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         String line;
         while((line = reader.readLine()) != null){
