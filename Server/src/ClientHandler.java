@@ -46,7 +46,7 @@ public class ClientHandler extends Thread {
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         String line;
 
-        List<ClientHandler> clientHandlers = server.getHandlerList();
+
 
         while ((line = reader.readLine()) != null) {
             //makes an array with split up words to detect commands for logging in etc.
@@ -65,15 +65,16 @@ public class ClientHandler extends Thread {
                 }
             }
             String msg = "You typed: " + line + "\n";
-//            //sends the messages from the clienthandler to all the other clienthandlers connected to the server
-//            for(ClientHandler handler : clientHandlers){
-//                handler.send(msg);
-//            }
+
             System.out.println(msg);
             outputStream.write(msg.getBytes());
         }
 
         clientSocket.close();
+    }
+
+    public String getLogin(){
+        return this.user;
     }
 
     private void loginHandler(OutputStream outputStream, String[] input) throws IOException {
@@ -90,16 +91,34 @@ public class ClientHandler extends Thread {
                 this.outputStream.write(msg.getBytes());
                 this.user = name;
                 System.out.println("User logged in succesfully: " + name);
+
+                List<ClientHandler> clientHandlers = server.getHandlerList();
+
+                //            //sends the messages from the clienthandler to all the other clienthandlers that the user is connected
+                String loginNotification = ("User " + this.user + " is online");
+                for(ClientHandler handler : clientHandlers){
+                    handler.send(loginNotification);
+                }
             }else if (name.equals("Guilliam") && password.equals("Guilliam")) {
                 String msg = "Logged in!\n";
                 this.outputStream.write(msg.getBytes());
                 this.user = name;
                 System.out.println("User logged in succesfully: " + name);
+
+                List<ClientHandler> clientHandlers = server.getHandlerList();
+
+                //            //sends the messages from the clienthandler to all the other clienthandlers that the user is connected
+                String loginNotification = ("User " + this.user + " is online");
+                for(ClientHandler handler : clientHandlers){
+                    handler.send(loginNotification);
+                }
             }
             else{
                 String msg = "Wrong login data\n";
                 this.outputStream.write(msg.getBytes());
             }
+
+
         }
     }
 
