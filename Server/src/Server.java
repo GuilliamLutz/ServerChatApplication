@@ -39,4 +39,8 @@ public class Server extends Thread{
 
         }
     }
+
+    public void removeClient(ClientHandler clientHandler) {
+        this.handlerList.remove(clientHandler);
+    }
 }
