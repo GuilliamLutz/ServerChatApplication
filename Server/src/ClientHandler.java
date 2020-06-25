@@ -55,16 +55,17 @@ public class ClientHandler extends Thread {
                 String command = input[0];
                 System.out.println(command);
                 System.out.println(input[0]);
-                if ("quit".equalsIgnoreCase(line)) {
+                if (command.equals("quit") || command.equals("logoff")){
+                    logoffHandler();
                     break;
                 } else if (command.equals("login")) {
                     loginHandler(this.outputStream, input);
                 }else{
-                    String unknown = "Unknown command: " + command;
+                    String unknown = ("Unknown command: " + command + "\n");
                     this.outputStream.write(unknown.getBytes());
                 }
             }
-            String msg = "You typed: " + line + "\n";
+            String msg = ("You typed: " + line + "\n");
 
             System.out.println(msg);
             outputStream.write(msg.getBytes());
@@ -73,7 +74,16 @@ public class ClientHandler extends Thread {
         clientSocket.close();
     }
 
-    public String getLogin(){
+    private void logoffHandler() throws IOException {
+        List<ClientHandler> clientHandlers = server.getHandlerList();
+        String logoffNotification = ("User " + this.user + " went offline\n");
+        for(ClientHandler handler : clientHandlers){
+            handler.send(logoffNotification);
+        }
+        this.clientSocket.close();
+    }
+
+    public String getUser(){
         return this.user;
     }
 
@@ -90,27 +100,49 @@ public class ClientHandler extends Thread {
                 String msg = "Logged in!\n";
                 this.outputStream.write(msg.getBytes());
                 this.user = name;
-                System.out.println("User logged in succesfully: " + name);
+                System.out.println("User logged in succesfully: " + name + "\n");
 
                 List<ClientHandler> clientHandlers = server.getHandlerList();
 
+                for (ClientHandler handler : clientHandlers){
+                        if (handler.getUser() != null) {
+                            if (!name.equals(handler.getUser())) {
+                                String userStatus = ("Online: " + handler.getUser() + "\n");
+                                send(userStatus);
+                            }
+                        }
+                }
+
                 //            //sends the messages from the clienthandler to all the other clienthandlers that the user is connected
-                String loginNotification = ("User " + this.user + " is online");
+                String loginNotification = ("User " + this.user + " is online \n");
                 for(ClientHandler handler : clientHandlers){
-                    handler.send(loginNotification);
+                    if (!name.equals(handler.getUser())) {
+                        handler.send(loginNotification);
+                    }
                 }
             }else if (name.equals("Guilliam") && password.equals("Guilliam")) {
                 String msg = "Logged in!\n";
                 this.outputStream.write(msg.getBytes());
                 this.user = name;
-                System.out.println("User logged in succesfully: " + name);
+                System.out.println("User logged in succesfully: " + name + "\n");
 
                 List<ClientHandler> clientHandlers = server.getHandlerList();
 
+                for (ClientHandler handler : clientHandlers){
+                    if (handler.getUser() != null) {
+                        if (!name.equals(handler.getUser())) {
+                            String userStatus = ("Online: " + handler.getUser() + "\n");
+                            send(userStatus);
+                        }
+                    }
+                }
+
                 //            //sends the messages from the clienthandler to all the other clienthandlers that the user is connected
-                String loginNotification = ("User " + this.user + " is online");
+                String loginNotification = ("User " + this.user + " is online \n");
                 for(ClientHandler handler : clientHandlers){
-                    handler.send(loginNotification);
+                    if (!name.equals(handler.getUser())) {
+                        handler.send(loginNotification);
+                    }
                 }
             }
             else{
@@ -123,7 +155,9 @@ public class ClientHandler extends Thread {
     }
 
     private void send(String msg) throws IOException {
-        outputStream.write(msg.getBytes());
+        if (this.user != null) {
+            outputStream.write(msg.getBytes());
+        }
     }
 
 }
