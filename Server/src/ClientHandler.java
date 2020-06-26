@@ -84,15 +84,20 @@ public class ClientHandler extends Thread {
         clientSocket.close();
     }
 
-    private void leaveHandler(String[] input) {
-        String group = input[1];
-        if (input.length>1) {
-            if (this.groupSet.contains(group)) {
-                this.groupSet.remove(group);
+    private void leaveHandler(String[] input) throws IOException {
+        if(input.length >1) {
+            String group = input[1];
+            if (input.length > 1) {
+                if (this.groupSet.contains(group)) {
+                    this.groupSet.remove(group);
+                }
             }
+        }else{
+            send("Type which group you want to leave\n");
         }
-    }
 
+
+    }
     public boolean isMemberOfGroup(String group){
         return this.groupSet.contains(group);
 
