@@ -136,7 +136,7 @@ public class ClientHandler extends Thread {
                 }
             }else {
                 if (reciever.equals(handler.getUser())) {
-                    String outgoingMessage = (this.user + ":\n" + message + "\n");
+                    String outgoingMessage = (this.user + ": " + message + "\n");
                     handler.send(outgoingMessage);
                 }
             }
@@ -146,7 +146,7 @@ public class ClientHandler extends Thread {
     private void logoffHandler() throws IOException {
         this.server.removeClient(this);
         List<ClientHandler> clientHandlers = this.server.getHandlerList();
-        String logoffNotification = ("User " + this.user + " went offline\n");
+        String logoffNotification = ("Offline now:  " + this.user + "\n");
         for(ClientHandler handler : clientHandlers){
             handler.send(logoffNotification);
         }
@@ -184,7 +184,7 @@ public class ClientHandler extends Thread {
                 }
 
                 //            //sends the messages from the clienthandler to all the other clienthandlers that the user is connected
-                String loginNotification = ("User " + this.user + " is online \n");
+                String loginNotification = ("Online now: " + this.user + "\n");
                 for(ClientHandler handler : clientHandlers){
                     if (!name.equals(handler.getUser())) {
                         handler.send(loginNotification);
@@ -208,7 +208,7 @@ public class ClientHandler extends Thread {
                 }
 
                 //            //sends the messages from the clienthandler to all the other clienthandlers that the user is connected
-                String loginNotification = ("User " + this.user + " is online \n");
+                String loginNotification = ("Online now: " + this.user + "\n");
                 for(ClientHandler handler : clientHandlers){
                     if (!name.equals(handler.getUser())) {
                         handler.send(loginNotification);
