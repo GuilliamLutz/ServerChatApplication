@@ -136,7 +136,7 @@ public class ClientHandler extends Thread {
                 }
             }else {
                 if (reciever.equals(handler.getUser())) {
-                    String outgoingMessage = (this.user + ":\n" + message + "\n");
+                    String outgoingMessage = (this.user + ": " + message + "\n");
                     handler.send(outgoingMessage);
                 }
             }
