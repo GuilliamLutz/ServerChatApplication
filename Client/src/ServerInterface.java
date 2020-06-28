@@ -118,7 +118,7 @@ public class ServerInterface {
     private void messageHandler(String[] input) {
         String reciever = input[0];
         System.out.println(input.length);
-        String message = input[1];
+        String message = input[1] + " " +  input[2];
 
         for (MessageListener listener : this.messageListeners){
             listener.onMessage(reciever, message);
