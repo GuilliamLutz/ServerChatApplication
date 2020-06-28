@@ -56,8 +56,8 @@ public class ClientHandler extends Thread {
             String[] input = line.split(" ", 3);
             if (input != null && input.length > 0) {
                 String command = input[0];
-                System.out.println(command);
-                System.out.println(input[0]);
+//                System.out.println(command);
+//                System.out.println(input[0]);
                 if (command.equals("quit") || command.equals("logoff")){
                     logoffHandler();
                     break;
@@ -78,7 +78,7 @@ public class ClientHandler extends Thread {
             String msg = ("You typed: " + line + "\n");
 
             System.out.println(msg);
-            outputStream.write(msg.getBytes());
+            //outputStream.write(msg.getBytes());
         }
 
         clientSocket.close();
@@ -90,6 +90,7 @@ public class ClientHandler extends Thread {
             if (input.length > 1) {
                 if (this.groupSet.contains(group)) {
                     this.groupSet.remove(group);
+                    send("You left: " + group + "\n");
                 }
             }
         }else{
@@ -107,7 +108,7 @@ public class ClientHandler extends Thread {
         if (input.length>1){
             String group = input[1];
             this.groupSet.add(group);
-            this.outputStream.write(("You joined" + group).getBytes());
+            this.outputStream.write(("You joined " + group + "\n").getBytes());
         }
     }
 
@@ -137,6 +138,7 @@ public class ClientHandler extends Thread {
             }else {
                 if (reciever.equals(handler.getUser())) {
                     String outgoingMessage = (this.user + ": " + message + "\n");
+                    System.out.println("ÖUTGOING:" + outgoingMessage);
                     handler.send(outgoingMessage);
                 }
             }
@@ -144,12 +146,12 @@ public class ClientHandler extends Thread {
     }
 
     private void logoffHandler() throws IOException {
-        this.server.removeClient(this);
         List<ClientHandler> clientHandlers = this.server.getHandlerList();
-        String logoffNotification = ("Offline now:  " + this.user + "\n");
+        String logoffNotification = ("Offline now: " + this.user + "\n");
         for(ClientHandler handler : clientHandlers){
             handler.send(logoffNotification);
         }
+        this.server.removeClient(this);
         this.clientSocket.close();
     }
 
@@ -170,7 +172,7 @@ public class ClientHandler extends Thread {
                 String msg = "Logged in!\n";
                 this.outputStream.write(msg.getBytes());
                 this.user = name;
-                System.out.println("User logged in succesfully: " + name + "\n");
+//                System.out.println("User logged in succesfully: " + name + "\n");
 
                 List<ClientHandler> clientHandlers = server.getHandlerList();
 
@@ -194,7 +196,7 @@ public class ClientHandler extends Thread {
                 String msg = "Logged in!\n";
                 this.outputStream.write(msg.getBytes());
                 this.user = name;
-                System.out.println("User logged in succesfully: " + name + "\n");
+//                System.out.println("User logged in succesfully: " + name + "\n");
 
                 List<ClientHandler> clientHandlers = server.getHandlerList();
 

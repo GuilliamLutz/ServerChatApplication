@@ -25,10 +25,10 @@ public class Server extends Thread{
             ServerSocket serverSocket = new ServerSocket(clientSocket);
             //loop that accepts incoming connections this also makes it possible to accommodate multiple clients
             while (true) {
-                System.out.println("bout to accept");
+//                System.out.println("bout to accept");
                 //represents socket to the client
                 Socket clientSocket = serverSocket.accept();
-                System.out.println("Accepted from" + clientSocket);
+//                System.out.println("Accepted from" + clientSocket);
                 //creates a new clientHandler that handles the communication with the clientSocket
                 ClientHandler clientHandler = new ClientHandler(this, clientSocket);
                 handlerList.add(clientHandler);
