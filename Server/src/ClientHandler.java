@@ -85,7 +85,7 @@ public class ClientHandler extends Thread {
     }
 
     private void leaveHandler(String[] input) throws IOException {
-        if(input.length >1) {
+        if(input.length >=1) {
             String group = input[1];
             if (input.length > 1) {
                 if (this.groupSet.contains(group)) {
